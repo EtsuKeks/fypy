@@ -20,9 +20,9 @@ import matplotlib.pyplot as plt
 # ============================
 # Set Common Parameters
 # ============================
-S0 = 100  # Initial stock price
-r = 0.01  # Interest rate
-q = 0.03  # Dividend yield
+S0 = 30000  # Initial stock price
+r = 0.05  # Interest rate
+q = 0.00  # Dividend yield
 
 # ============================
 # Set Term Structures
@@ -34,7 +34,7 @@ fwd = EquityForward(S0=S0, discount=disc_curve, divDiscount=div_disc)
 # ============================
 # Create Model (to generate a synthetic market to fit to)
 # ============================
-model_name = 'NIG'  # Choose this name, then override params if desired
+model_name = 'BSM'  # Choose this name, then override params if desired
 
 models = {
     'VG': VarianceGamma(sigma=0.2, theta=-0.1, nu=0.6, forwardCurve=fwd, discountCurve=disc_curve),
@@ -58,7 +58,7 @@ pricer = ProjEuropeanPricer(model=model, N=2 ** 11, L=16 if model_name == 'Hes' 
 surface = MarketSurface()
 
 ttms = [0.1, 0.5, 1., 3.]  # tenors in surface
-strikes = np.arange(50, 150, 5)  # same strikes for each tenor, for simplicity
+strikes = np.arange(27500, 33000, 3)  # same strikes for each tenor, for simplicity
 is_calls = np.ones(len(strikes), dtype=bool)
 
 target_prices = []
@@ -76,6 +76,7 @@ for ttm in ttms:
 # Full set of market target prices
 target_prices = np.concatenate(target_prices)
 
+print(target_prices)
 
 def targets_pricer() -> np.ndarray:
     # Function used to evaluate the model prices for each target
