@@ -29,13 +29,13 @@ def predict_heston_fourier(model: Heston, surface, pricer_name) -> np.ndarray:
         if pricer_name == "proj":
             pricer = ProjEuropeanPricer(model=model, N=2**12, L=20)
         elif pricer_name == "lewis":
-            pricer = LewisEuropeanPricer(model=model, N=2**12, limit=200)
+            pricer = LewisEuropeanPricer(model=model)
         elif pricer_name == "gil":
-            pricer = GilPeleazEuropeanPricer(model=model, limit=1000)
+            pricer = GilPeleazEuropeanPricer(model=model)
         elif pricer_name == "carr":
-            pricer = CarrMadanEuropeanPricer(model=model, alpha=0.75, eta=0.1, N=2**9)
+            pricer = CarrMadanEuropeanPricer(model=model)
         elif pricer_name == "hilbert":
-            pricer = HilbertEuropeanPricer(model=model, alpha=0.75, eta=0.1, N=2**9, Nh=2**5)
+            pricer = HilbertEuropeanPricer(model=model)
         
         pred_prices = pricer.price_strikes(T=slc.T, K=slc.strikes, is_calls=slc.is_calls)
         prices.append(pred_prices)
